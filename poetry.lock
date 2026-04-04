@@ -424,33 +424,6 @@ files = [
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
-name = "clip"
-version = "1.0"
-description = ""
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = []
-develop = false
-
-[package.dependencies]
-ftfy = "*"
-packaging = "*"
-regex = "*"
-torch = "*"
-torchvision = "*"
-tqdm = "*"
-
-[package.extras]
-dev = ["pytest"]
-
-[package.source]
-type = "git"
-url = "https://github.com/openai/CLIP.git"
-reference = "HEAD"
-resolved_reference = "d05afc436d78f1c48dc0dbf8e5980a9d471f35f6"
-
-[[package]]
 name = "colorama"
 version = "0.4.6"
 description = "Cross-platform colored terminal text."
@@ -1699,6 +1672,25 @@ files = [
     {file = "nvidia_nvtx-13.0.85-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:cb7780edb6b14107373c835bf8b72e7a178bac7367e23da7acb108f973f157a6"},
     {file = "nvidia_nvtx-13.0.85-py3-none-win_amd64.whl", hash = "sha256:d66ea44254dd3c6eacc300047af6e1288d2269dd072b417e0adffbf479e18519"},
 ]
+
+[[package]]
+name = "openai-clip"
+version = "1.0.1"
+description = ""
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "openai-clip-1.0.1.tar.gz", hash = "sha256:cd40bf2f205c096c49524fcbff484339f793b52afd6e7ffad80a2fe108151721"},
+]
+
+[package.dependencies]
+ftfy = "*"
+regex = "*"
+tqdm = "*"
+
+[package.extras]
+dev = ["pytest"]
 
 [[package]]
 name = "outcome"
@@ -3551,4 +3543,4 @@ h11 = ">=0.16.0,<1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.15"
-content-hash = "ec8ea46b69be4c5dd7e6e2abdbe26bd5cbfb49fe06f539d4b7673046144b3943"
+content-hash = "ea91d66ca7d876d5478f3743dc9bb33d22408a004c87ffb71045954498a9660c"
