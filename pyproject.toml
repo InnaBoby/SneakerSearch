@@ -18,6 +18,8 @@ dependencies = [
     "pillow (>=12.2.0,<13.0.0)",
     "qdrant-client (>=1.17.1,<2.0.0)",
     "openai-clip (>=1.0.1,<2.0.0)",
+    "aiogram (>=3.27.0,<4.0.0)",
+    "aiohttp (>=3.13.5,<4.0.0)",
 ]
 
 
@@ -32,5 +34,6 @@ dev = [
     "beautifulsoup4 (>=4.14.3,<5.0.0)",
     "selenium (>=4.41.0,<5.0.0)",
     "undetected-chromedriver (>=3.5.5,<4.0.0)",
-    "chompjs (>=1.4.0,<2.0.0)"
+    "chompjs (>=1.4.0,<2.0.0)",
+    "dotenv (>=0.9.9,<0.10.0)"
 ]
