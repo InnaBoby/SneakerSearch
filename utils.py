@@ -1,6 +1,6 @@
 import torch
 
-def get_image_embedding(image, preprocessor, model, device):
+def get_clip_embedding(image, preprocessor, model, device):
 
     '''
     Функция для получения эмбеддинга изображения из изображения
