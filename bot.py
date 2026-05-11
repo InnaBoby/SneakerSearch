@@ -4,12 +4,15 @@ import aiohttp
 from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters import Command
-from aiogram.types import FSInputFile
+from aiogram.types import FSInputFile, ReplyKeyboardMarkup, KeyboardButton
 import asyncio
+import logging
 
 #local_mode
 from dotenv import load_dotenv
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 SERVER_URL = os.getenv("API_URL")
 BOT_TOKEN = os.getenv("BOT_TOKEN")
@@ -22,9 +25,29 @@ else:
     bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
+start_keyboard = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text="Начать")]
+    ],
+    resize_keyboard=True, # чтобы кнопка не была на пол-экрана
+    input_field_placeholder="Загрузи фото"
+)
+
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    await message.answer("Привет! Пришли мне фото кроссовок, и я найду похожие модели")
+    await message.answer(
+        "Привет! Я бот для поиска похожих кросовок. Загрузи фотку кроссовка и я найду 3 похожие модели",
+        reply_markup=start_keyboard,
+        parse_mode="HTML"
+        )
+    
+@dp.message(F.text == "Начать")
+async def start_instruction(message: types.Message):
+    instruction = (
+        "Пришли мне фото кроссовок, и я найду 3 похожие модели \n",
+        "<i>Жду твое фото!</i>"
+    )
+    await message.answer(instruction, parse_mode="HTML")
 
 @dp.message(F.photo)
 async def handle_photo(message: types.Message):
@@ -48,6 +71,10 @@ async def handle_photo(message: types.Message):
 
                 if not items:
                     await message.answer("Ничего не нашел, попробуй другое фото")
+                    return
+                
+                if isinstance(items, str):
+                    await message.answer(f"{items}. Попробуй другое фото")
                     return
 
                 # 3. Выводим результаты (топ-3)
