@@ -2,7 +2,7 @@
 
 Сервис для поиска похожих кроссовок
 <p align="center">
-<img src="img/image.png" alt="alt text" width="300">
+<img src="img/image.png" alt="alt text" width="500">
 </p>
 
 Структура сервиса состоит из:
