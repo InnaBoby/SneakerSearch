@@ -1,4 +1,27 @@
 services:
+  init:
+    image: alpine:latest
+    container_name: snapshot_loader
+    volumes:
+      - ./qdrant_snapshots:/snapshots
+      - ./models:/models
+    entrypoint: ["/bin/sh", "-c"]
+    command: >
+      if [ ! -f /snapshots/sneakers.snapshot ]; then
+        apk add --no-cache curl awk;
+        curl -L "https://drive.google.com/uc?export=download&id=154hiFEQcN3mBdPmdgoyvSpWRj0wLTlC8" -o /snapshots/sneakers.snapshot;
+        echo "Снапшот загружен";
+      else
+        echo "Такой снапшот уже есть";
+      fi;
+      if [ ! -f /models/best_mobilenet_sneakers.pth ]; then
+        curl -sc /tmp/cookie "https://drive.google.com/uc?export=download&id=1azuJIqI5wSdx8UsUIUN2duac-BMMQ7Ds" > /dev/null;
+        code="$(awk '/_warning_/ {print $$NF}' /tmp/cookie)"  
+        curl -Lb /tmp/cookie "https://drive.google.com/uc?export=download&confirm=$${code}&id=1azuJIqI5wSdx8UsUIUN2duac-BMMQ7Ds" -o models/best_mobilenet_sneakers.pth
+        echo "Mobilenet загружен";
+      else
+        echo "Mobilenet уже есть";
+      fi
   qdrant:
     image: qdrant/qdrant:latest
     container_name: qdrant_db
@@ -7,7 +30,17 @@ services:
       - "6334:6334"
     volumes:
       - ./qdrant_storage:/qdrant/storage:z
+      - ./qdrant_snapshots:/qdrant/snapshots:z 
+    depends_on:
+      init:
+        condition: service_completed_successfully 
+    command: ["./qdrant", "--snapshot", "/qdrant/snapshots/sneakers.snapshot:sneakers"]
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/readyz"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   backend:
     build: .
@@ -17,8 +50,11 @@ services:
       - "8000:8000"
     env_file: .env
     depends_on:
-      - qdrant
-
+      qdrant:
+        condition: service_healthy 
+    volumes:
+      - .:/app
+      - ./models:/app/models
   bot:
     build: .
     container_name: telegram-bot

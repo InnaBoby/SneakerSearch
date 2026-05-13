@@ -13,9 +13,9 @@ from utils import sneakers_classifier, get_clip_embedding
 
 logger = logging.getLogger("uvicorn.error")
 
-#local_mode
-from dotenv import load_dotenv
-load_dotenv()
+# #local_mode
+# from dotenv import load_dotenv
+# load_dotenv()
 
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_PORT = os.getenv("DB_PORT", 6333)
@@ -75,7 +75,7 @@ async def serch_similar_sneakers(
 
     sneakers_proba = sneakers_classifier(image, mobilenet, device)
     logger.info(f"Загруженное фото содержит кроссовки с вероятностью {sneakers_proba}")
-    if sneakers_proba < 0.4:
+    if sneakers_proba < 0.5:
         return {"results": f"Нa фото нет кроссовка с вероятностью {1-sneakers_proba}"}
 
     image_emb = get_clip_embedding(image, preprocessor, model, device)

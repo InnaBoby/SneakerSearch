@@ -8,9 +8,9 @@ from aiogram.types import FSInputFile, ReplyKeyboardMarkup, KeyboardButton
 import asyncio
 import logging
 
-#local_mode
-from dotenv import load_dotenv
-load_dotenv()
+# #local_mode
+# from dotenv import load_dotenv
+# load_dotenv()
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +74,7 @@ async def handle_photo(message: types.Message):
                     return
                 
                 if isinstance(items, str):
-                    await message.answer(f"{items}. Попробуй другое фото")
+                    await message.answer(f"Я не нашел кроссовки на загруженном фото. Попробуй загрузить другое фото!")
                     return
 
                 # 3. Выводим результаты (топ-3)
