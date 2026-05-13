@@ -1,9 +1,8 @@
 <h1 align="center">SneakerSearch</h1>
 
 ***
-***
-
 **Сервис для поиска похожих кроссовок**
+***
 
 <p align="center">
 <img src="img/image.png" alt="alt text" width="500">
